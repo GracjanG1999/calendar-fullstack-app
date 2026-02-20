@@ -1,0 +1,644 @@
+/*
+════════════════════════════════════════════════════════════════
+  INDEX.CSS - WYGLĄD CAŁEJ APLIKACJI
+════════════════════════════════════════════════════════════════
+  Ten plik mówi przeglądce JAK ma wyglądać każdy element:
+  - Kolory tła i tekstu
+  - Rozmiary przycisków
+  - Animacje (efekty świecenia, animacje)
+  - Rozmieszczenie kalendarza
+  - Styl modala do dodawania zdarzeń
+════════════════════════════════════════════════════════════════
+*/
+
+/* GŁÓWNE USTAWIENIA - Styl ciemny całej aplikacji */
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; /* Który font? */
+  color-scheme: dark; /* Powiedzmy przeglądarce: "To tryb ciemny!" */
+  background-color: #1a1a1a; /* Bardzo ciemna szarość - prawie czarna */
+  color: #ffffff; /* Tekst będzie biały (widać na czarnym tle) */
+}
+
+/*
+  🎯 STRUKTURA STYLÓW:
+  
+  1) GLOBALNE - Styl wszystkiego (fonty, kolory)
+  2) PRZYCISKI - Jak wyglądają guziki
+  3) INPUTY - Pola do pisania (nazwa, godzina)
+  4) MODAL/OKNO - Okno "Dodaj Wydarzenie" pojawiające się na środku
+  5) KALENDARZ - Siatka kalendarza (dni, tygodnie)
+  6) ZDARZENIA - Jak wyglądają poszczególne zdarzenia na kalendarzu
+  7) AGENDA - Widok listy wszystkich zdarzeń
+  8) KOLORY - Wszystkie kolory zdarzeń i animacji
+*/
+
+
+/* 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  RESET - Ustawienia bazowe
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+*/
+
+/* Ciało strony - główny kontener */
+body {
+  margin: 0;              /* Usuń domyślne marginesy */
+  display: block;         /* Блок layout (nie flex), żeby kalendarz "oddychał" */
+  min-height: 100vh;      /* Zajmij całą wysokość okna */
+}
+
+/* Główny kontener React'a */
+#root {
+  width: 100%;            /* Zajmij całą szerokość */
+}
+/* --- Zgrupowane reguły klas (duplikaty usunięte; zachowano ostatnie wystąpienia) --- */
+
+/* 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PRZYCISKI - Jak wyglądają guziki
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+*/
+
+/* Przycisk "Anuluj" - szary, transparentny */
+.btn-cancel {
+  background: none;       /* Brak tła */
+  color: #777;            /* Szary tekst */
+  border: none;           /* Brak ramki */
+  cursor: pointer;        /* Zmień kursor na "łapka" */
+}
+
+/* Przycisk "Zapisz Plan" - niebieski z błyskiem */
+.btn-save {
+  background: #3b82f6;    /* Ładny niebieski kolor */
+  color: white;           /* Biały tekst */
+  border: none;           /* Brak ramki */
+  padding: 10px 25px;     /* Wewnętrzne marginesy (robi przycisk większy) */
+  border-radius: 6px;     /* Zaokrąglone rogów */
+  font-weight: bold;      /* Grubszy tekst */
+  cursor: pointer;        /* Zmień kursor na "łapka" */
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); /* Cień pod przyciskiem */
+}
+
+/* Efekt przy najechaniu myszką na "Zapisz" */
+.btn-save:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.7); /* Pokaż świecący cień */
+}
+
+.current-month-label {
+  margin-left: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #3b82f6;
+  text-transform: capitalize;
+}
+
+/* Przycisk "Powrót", "<", ">" - główne przyciski nawigacji */
+.glow-button {
+  background: #2a2a2a;     /* Ciemna szaarość */
+  color: white;            /* Biały tekst */
+  border: 1px solid #444;  /* Ciemna ramka */
+  padding: 10px 20px;      /* Marginesy wewnętrzne */
+  border-radius: 8px;      /* Zaokrąglone rogi */
+  cursor: pointer;         /* Łapka myszki */
+  font-weight: bold;       /* Grubszy tekst */
+  transition: all 0.3s ease; /* Ładna animacja zmian */
+}
+
+/* Efekt gdy najedziesz myszką - świeci się! */
+.glow-button:hover {
+  background: #3b82f6;              /* Zmień na niebieski */
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); /* Niebieski blask */
+  border-color: #60a5fa;            /* Jaśniejsza ramka */
+  transform: translateY(-2px);      /* Lekko się podniesie */
+}
+
+/* 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  POLA TEKSTOWE - Gdzie piszemy tekst
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+*/
+
+/* Pole do wpisania nazwy wydarzenia */
+.glow-input {
+  width: 100%;            /* Zajmij całą szerokość */
+  padding: 12px;          /* Miejsce wewnątrz pola */
+  margin: 20px 0;         /* Rzeczy powyżej i poniżej */
+  background: #111;       /* Bardzo czarny */
+  border: 2px solid #333; /* Ciemna ramka */
+  border-radius: 8px;     /* Zaokrąglone rogi */
+  color: white;           /* Biały tekst */
+  outline: none;          /* Brak domyślnego bordera */
+  transition: 0.3s;       /* Ładna animacja */
+}
+
+/* Efekt gdy napiszesz coś (pole jest "fokus") */
+.glow-input:focus {
+  border-color: #3b82f6;              /* Zmień ramkę na niebieską */
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); /* Niebieski blask */
+}
+
+/* Główny kontener - oś całej aplikacji */
+.main-container {
+  height: 95vh;                /* Zajmij 95% wysokości ekranu */
+  padding: 20px;               /* Marginesy z wszystkich stron */
+  background-color: #1a1a1a;   /* Bardzo czarny */
+  color: white;                /* Biały tekst */
+}
+
+/* Tytuł "Kalendarz" na górze */
+.main-title {
+  text-align: left;            /* Wyrównaj do lewej */
+  margin-bottom: 20px;         /* Przestrzeń poniżej */
+  font-weight: 800;            /* Bardzo grubszy i pogrubiony */
+}
+
+/* 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  MODAL/OKNO - Okno "Dodaj Wydarzenie"
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+*/
+
+/* Zawartość wewnątrz modalnego okna */
+.modal-content {
+  background: #2a2a2a;       /* Ciemna szarość */
+  padding: 30px;             /* Przestrzeń wewnętrz */
+  border-radius: 15px;       /* Bardzo zaokrąglone rogi */
+  border: 1px solid #444;    /* Ciemna ramka */
+  text-align: center;        /* Wycentruj tekst */
+}
+
+/* Czarne tło ZA modalem (przykrywające całą stronę) */
+.modal-overlay {
+  position: fixed;                           /* Przylip do okon i ekranu */
+  top: 0; left: 0; right: 0; bottom: 0;    /* Zajmij całą przestrzeń */
+  background: rgba(0, 0, 0, 0.85);          /* Bardzo ciemne tło za modalem */
+  display: flex;                             /* Użyj flexbox do wycentrowania */
+  justify-content: center;                   /* Wycentruj poziomo */
+  align-items: center;                       /* Wycentruj pionowo */
+  z-index: 9999;                             /* Polóż ON TOP (na wierzchu wszystkiego) */
+}
+
+/* Pasek nawigacji - przyciska i informacje na górze */
+.nav-bar {
+  display: flex;             /* Elementy obok siebie (poziomo) */
+  gap: 12px;                 /* Odstęp między przyciskami */
+  align-items: center;       /* Wyrównaj w pionie */
+  margin-bottom: 20px;       /* Przestrzeń poniżej */
+}
+
+/* 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  KALENDARZ - Siatka, dni, wygląd
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+*/
+
+/* Efekt gdy najedziesz myszką na dzień */
+.rbc-day-bg:hover {
+  background-color: rgba(59, 130, 246, 0.1) !important; /* Subtelny niebieski */
+  box-shadow: inset 0 0 15px rgba(59, 130, 246, 0.4) !important; /* Blask ze środka */
+  cursor: cell;                                           /* Kursor jak siatka */
+}
+
+/* Widok tygodnia i dznia */
+.rbc-time-view{
+  border: 1px solid #444 !important;  /* Ciemna ramka */
+  border-radius: 8px;                 /* Zaokrąglone rogi */
+  overflow: hidden;                   /* Ukryj to co wyłazi */
+}
+
+/* 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ZDARZENIA - Jak wygląda zdarzenie
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+*/
+
+/* Każde zdarzenie (prostokąt z tytułem) */
+.rbc-event {
+  border-radius: 4px !important;                                          /* Zaokrąglone rogi */
+  padding: 2px 8px !important;                                            /* Marginesy wewnętrzne */
+  font-size: 12px !important;                                             /* Mały tekst */
+  transition: opacity 0.4s ease, transform 0.2s ease !important;          /* Ładne animacje */
+}
+  /* Przeszłe zdarzenia - wygaszone (szare) */
+  .rbc-agenda-event-cell span {
+    transition: color 0.4s ease; /* Ładna zmiana koloru */
+  }
+
+  /* Dni spoza zakresu miesiąca - ciemniejsze */
+  .rbc-day-bg.rbc-off-range-bg {
+    filter: brightness(0.8); /* Przyciemniej */
+  }
+
+  /* Efekt przy najechaniu myszką na zdarzenie - świeci się! */
+  .rbc-event:hover {
+    transform: scale(1.02);   /* Lekko się powiększ */
+    filter: brightness(1.2);  /* Pojaśnij trochę */
+  }
+
+/* Usuń białe kropki w widoku miesiąca (wyglądają ładniej bez nich) */
+.rbc-event-label {
+  display: none !important; /* Ukryj je */
+}
+
+/* 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  DZISIAJ - Wyróżnij dzisiejszego dnia
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+*/
+
+/* Tło dzisiejszego dnia - bardzo subtelny błękit */
+.rbc-today-custom {
+  background-color: rgba(59, 130, 246, 0.05) !important; /* Niewidoczny niebieski */
+  position: relative; /* Pozwól na efekty pseudo-elementów */
+}
+
+/* Niebieski pasek na górze dzisiejszego dnia (wyróżnienie!) */
+.rbc-today-custom::before {
+  content: "";                                                /* "Rysuj coś" */
+  position: absolute;                                        /* Przymaluj do kontenera */
+  top: 0; left: 0; right: 0;                               /* Zajmij całą górę */
+  height: 4px;                                               /* Gruba kreska */
+  background: #3b82f6;                                       /* Niebieski kolor */
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);            /* Cień/blask */
+  z-index: 1;                                                /* Polóż na wierzchu */
+}
+
+/* Numer dnia dla "Dzisiaj" ma być niebieski */
+.rbc-today-custom .rbc-button-link {
+  color: #3b82f6 !important;  /* Zmień kolor na niebieski */
+  font-size: 1.1em !important; /* Lekko większy */
+  font-weight: 800 !important; /* Bardzo grubszy */
+}
+
+/* Naprawa kontrastu dla reszty kalendarza */
+
+.rbc-day-bg {
+  border-left: 1px solid #333 !important;
+}
+
+.rbc-month-view, .rbc-month-row {
+  border-color: #333 !important;
+}
+
+/* Dni spoza zakresu miesiąca - przyciemnienie */
+.rbc-off-range-bg {
+  background: #242424 !important; /* Odrobinę jaśniejsze od czerni */
+}
+
+/* Aktywny przycisk widoku (np. "Miesiąc" kiedy wybierzemy) */
+.rbc-toolbar button:active, .rbc-toolbar button.rbc-active {
+  background-color: #ffffff !important;           /* Zmień na białe tło */
+  color: white !important;                        /* Biały tekst */
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.2) !important; /* Cień wciśnęcia */
+}
+
+/* Napis "Luty 2026" na górze kalendarz */
+.rbc-toolbar-label {
+  font-size: 1.5em;               /* Duży tekst */
+  font-weight: bold;              /* Grubki */
+  color: #ffffff;                 /* Biały */
+}
+
+/* Rozmiar modalnego okna "Dodaj Wydarzenie" */
+.large-modal { 
+  width: 450px; /* Szerokie okno */
+}
+
+/* Selektor "Jednorazowe" vs "Cykliczne" */
+.type-selector {
+  display: flex;              /* Przyciski obok siebie */
+  background: #111;           /* Czarne tło */
+  border-radius: 10px;        /* Zaokrąglone rogi */
+  margin-bottom: 20px;        /* Przestrzeń poniżej */
+  overflow: hidden;           /* Ukryj to co wyłazi */
+  border: 1px solid #444;     /* Ciemna ramka */
+}
+
+/* Każdy przycisk selektor */
+.type-selector button {
+  flex: 1;                    /* Zajmij równą część */
+  padding: 10px;              /* Marginesy */
+  border: none;               /* Brak ramki */
+  background: none;           /* Brak tła */
+  color: #888;                /* Szary tekst */
+  cursor: pointer;            /* Łapka */
+  font-weight: bold;          /* Grubki */
+}
+
+/* Wybrany typ (np. "Cykliczne" które aktualnie wybrano) */
+.type-selector button.active-type {
+  background: #3b82f6;                              /* Niebieski */
+  color: white;                                     /* Biały tekst */
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);   /* Blask */
+}
+
+/* Siatka dni do wyboru (Pon, Wt, Śr itp) */
+.days-grid {
+  display: flex;               /* Dni obok siebie */
+  gap: 5px;                    /* Małe odstępy */
+  justify-content: center;     /* Wycentruj */
+  margin-top: 10px;            /* Przestrzeń powyżej */
+}
+
+/* Przycisk każdego dnia */
+.day-btn {
+  padding: 8px;               /* Marginesy wewnętrzne */
+  background: #222;           /* Ciemny */
+  border: 1px solid #444;     /* Ramka */
+  color: white;               /* Tekst */
+  border-radius: 5px;         /* Zaokrąglone */
+  cursor: pointer;            /* Łapka */
+  font-size: 12px;            /* Mały tekst */
+}
+
+/* Wybrany dzień - świeci się niebiesko! */
+.day-btn.active {
+  background: #3b82f6;                             /* Niebieski */
+  border-color: #60a5fa;                           /* Jaśniejszy niebieski */
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);   /* Blask */
+}
+/* --- NAPRAWA ROZJECHANEGO KALENDARZA --- */
+
+/* Wymuszenie pełnej szerokości dla kontenera */
+/* 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  UKŁAD KALENDARZA - Siatka dni
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+*/
+
+/* Cały kalendarz - zajmij całą szerokość */
+.rbc-calendar {
+  width: 100% !important;          /* Całą szerokość */
+  display: flex !important;        /* Flexbox */
+  flex-direction: column !important; /* Rzeczy pod sobą */
+}
+
+/* Główny widok kalendarza (siatka miesiąca) */
+.rbc-month-view {
+  display: flex !important;          /* Flexbox */
+  flex-direction: column !important; /* Wiersze pod sobą */
+  flex: 1 0 0 !important;            /* Zajmij dostępne miejsce */
+  width: 100% !important;            /* Całą szerokość */
+  min-height: 600px !important;      /* Przynajmniej taka wysokość */
+  user-select: none;                 /* Nie pozwól na zaznaczenie tekstu */
+}
+
+/* Każdy tydzień - traktuj jako rząd */
+.rbc-month-row {
+  display: flex !important;          /* Flexbox */
+  flex-direction: column !important; /* Rzeczy pod sobą */
+  flex: 1 0 0 !important;            /* Zajmij równą część */
+  overflow: hidden;                  /* Ukryj to co wyłazi */
+}
+
+
+/* Właściwy rząd z datami - dni obok siebie */
+.rbc-month-row .rbc-row-content .rbc-row {
+  display: flex !important;       /* Flexbox */
+  flex-direction: row !important; /* W linii poziomej */
+  width: 100% !important;         /* Całą szerokość */
+}
+
+/* Każda komórka z dniem (cyferka) */
+.rbc-date-cell {
+  flex: 1 1 0% !important;    /* Równa część (1/7 dla 7 dni) */
+  text-align: right !important; /* Wyrównaj cyfrę do prawej */
+  padding: 8px !important;     /* Marginesy */
+  font-size: 14px !important;  /* Rozmiar czcionki */
+  font-weight: bold !important; /* Grubkie */
+  min-width: 0 !important;     /* Nie robij za dużo */
+  pointer-events: none;        /* Nie reaguj na kliknięcia (cyferki są dekoracyjne) */
+}
+
+/* Zawartość rzędu - gdzie są zdarzenia */
+.rbc-row-content {
+  z-index: 2;                  /* Polóż powyżej tła */
+  pointer-events: auto;        /* Pozwól klikać na zdarzenia */
+}
+
+/* Guziki z cyframi dni - pozwól klikać */
+.rbc-date-cell button {
+  pointer-events: auto;        /* Pozwól klikać */
+}
+
+/* Tło każdego dnia (komórka) */
+.rbc-day-bg {
+  flex: 1 1 0% !important;        /* Równa część */
+  border-left: 1px solid #444 !important; /* Linie między dniami */
+}
+
+/* Nagłówek kalendarza (Poniedziałek, Wtorek itp) */
+.rbc-month-header {
+  display: flex !important;       /* Flexbox */
+  flex-direction: row !important; /* Kurs w linii poziomej */
+}
+
+/* Każde pole nagłówka ("Pon", "Wt" itp) */
+.rbc-header {
+  flex: 1 0 0 !important;            /* Równa część */
+  padding: 10px 0 !important;        /* Marginesy */
+  border-bottom: 1px solid #444 !important; /* Linia poniżej */
+}
+/* "Znaczek" z wybraną datą w oknie dodawania (np. "19 lutego 2026") */
+.selected-date-badge {
+  background: rgba(59, 130, 246, 0.1); /* Podtła z odrobiną niebieski */
+  color: #3b82f6;                      /* Niebieski tekst */
+  padding: 8px 15px;                   /* Marginesy */
+  border-radius: 20px;                 /* Bardzo zaokrąglone (będzie jak piguła) */
+  display: inline-block;               /* Ścieśnięty do tekstu */
+  margin-bottom: 20px;                 /* Przestrzeń poniżej */
+  font-weight: bold;                   /* Grubkit */
+  border: 1px solid rgba(59, 130, 246, 0.3); /* Subtelna ramka */
+}
+
+/* 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  WYBÓR GODZIN - Start i Koniec
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+*/
+
+/* Kontener obu pól czasu */
+.time-picker-container {
+  display: flex;           /* Pola obok siebie */
+  justify-content: center; /* Wycentruj */
+  gap: 30px;              /* Przestrzeń między nimi */
+  margin: 15px 0;         /* Marginesy */
+}
+
+/* Jedno pole czasu (Start lub Koniec) */
+.time-field {
+  display: flex;          /* Flexbox */
+  flex-direction: column; /* Elementy pod sobą */
+  align-items: center;    /* Wycentruj */
+}
+
+/* Etykieta "Start (opcjonalnie)" */
+.time-field label {
+  font-size: 12px;           /* Mały tekst */
+  color: #888;               /* Szary */
+  margin-bottom: 5px;        /* Przestrzeń poniżej */
+  text-transform: uppercase; /* WIELKIE LITERY */
+}
+
+/* Pole do wyboru godziny (pokazuje 14:30) */
+.time-field input[type="time"] {
+  background: #111;          /* Czarne tło */
+  border: 1px solid #444;    /* Ramka */
+  color: white;              /* Biały tekst */
+  padding: 8px;              /* Marginesy wewnętrzne */
+  border-radius: 5px;        /* Zaokrąglone rogi */
+  font-size: 18px;           /* Duży tekst */
+  outline: none;             /* Brak domyślnego zaznaczenia */
+  transition: 0.3s;          /* Animacja */
+}
+
+/* Efekt kiedy klikniesz na pole - świeci się! */
+.time-field input[type="time"]:focus {
+  border-color: #3b82f6;              /* Niebieski border */
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); /* Blask */
+}
+
+/* Ikona zegara w polu czasu - zrób ją białą */
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);  /* Odwróć kolory (czarne-> białe) */
+  cursor: pointer;    /* Łapka myszki */
+}
+
+/* Przycisk "Cały tydzień (Deadline/Spotkania)" */
+.select-all-btn {
+  margin-top: 15px;                             /* Odstęp powyżej */
+  background: transparent;                      /* Przezroczysty */
+  color: #3b82f6;                               /* Niebieski tekst */
+  border: 1px dashed #3b82f6;                   /* Przerywana ramka */
+  padding: 5px 15px;                            /* Marginesy */
+  border-radius: 5px;                           /* Zaokrąglone rogi */
+  font-size: 12px;                              /* Mały tekst */
+  cursor: pointer;                              /* Łapka */
+  transition: 0.3s;                             /* Animacja */
+}
+
+/* Efekt najechania myszką */
+.select-all-btn:hover {
+  background: rgba(59, 130, 246, 0.1);         /* Subtelny niebieski */
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); /* Delikatny blask */
+}
+
+/* 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  WIDOK AGENDA - Lista wszystkich zdarzeń
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
+*/
+
+/* Całą tabelę na bloki zamiast tabelki */
+.rbc-agenda-view table.rbc-agenda-table {
+  display: block !important;  /* Zmień na blokowy layout */
+  border: none !important;    /* Usunięto ramkę */
+}
+
+/* Ciało tabeli i wiersze - wszystko jako bloki */
+.rbc-agenda-view table.rbc-agenda-table tbody,
+.rbc-agenda-view table.rbc-agenda-table tr {
+  display: block !important;  /* Każdy wiersz na blok */
+  width: 100% !important;     /* Całą szerokość */
+}
+
+/* Nagłówek daty w agendzie ("19 lipca (wtorek)") */
+.rbc-agenda-date-cell {
+  display: block !important;          /* Blok */
+  width: 100% !important;             /* Całą szerokość */
+  background-color: #1a1a1a !important; /* Czarne tło */
+  padding: 15px 20px !important;      /* Marginesy */
+  margin-top: 0px !important;         /* Brak odstępu */
+  border-bottom: 2px solid #3b82f6 !important; /* Niebieski pasek poniżej */
+  position: sticky;                   /* Przylij do góry kiedy scrollujemy */
+  top: 0;                             /* Zastaw sobie na wierzchu */
+  z-index: 10;                        /* Nad wszystkim */
+}
+
+/* "Dzisiaj" - wyświetli się kolorem złota */
+.relative-date-today {
+  color: #ffcc00 !important;    /* Żółty/złoty kolor */
+  font-weight: bold !important; /* Grubki */
+}
+
+/* Mały odstęp między datami */
+.rbc-agenda-table tr:first-child .rbc-agenda-date-cell {
+  margin-top: 0;  /* Brak odstępu dla pierwszej */
+}
+
+/* Tekst "19 lipca (wtorek)" */
+.custom-agenda-date-label {
+  font-size: 1.2rem !important;      /* Duży tekst */
+  font-weight: 800 !important;       /* Bardzo grubki */
+  color: #3b82f6 !important;         /* Niebieski */
+  text-transform: capitalize;        /* Pierwsza litera duża */
+}
+
+/* Czas i nazwa zdarzenia - oba razem w linii */
+.rbc-agenda-time-cell, 
+.rbc-agenda-event-cell {
+  display: inline-block !important;   /* Obok siebie */
+  vertical-align: middle !important;  /* Wyrównaj w pionie */
+  background: transparent !important; /* Przezroczysty */
+  border: none !important;            /* Brak ramki */
+  padding: 10px 20px !important;      /* Marginesy */
+}
+
+/* Kolumna czasu (np. "14:30 - 15:00") */
+.rbc-agenda-time-cell {
+  width: auto !important;       /* Tyle ile potrzeba */
+  min-width: 150px !important;  /* Ale nie mniej */
+}
+
+/* Tekst czasu - złoty kolor */
+.custom-agenda-time-label {
+  color: #ffcc00 !important;         /* Żółty/złoty */
+  font-weight: bold;                 /* Grubki */
+  font-family: monospace;            /* Tekst maszynopisu (np. "14:30") */
+}
+
+/* Kolumna zdarzenia - zajmuje resto miejsca */
+.rbc-agenda-event-cell {
+  width: calc(100% - 170px) !important; /* Całą szerokość minus czas */
+}
+
+/* Cały widok agendy - scroll */
+.rbc-agenda-view {
+  max-height: 75vh !important;           /* Zajmiij 75% ekranu */
+  overflow-y: auto !important;           /* Włącz pionowy scroll */
+  overflow-x: hidden !important;         /* Nie scrolluj w bok */
+  scrollbar-width: thin;                 /* Cienki pasek scrollu */
+  scrollbar-color: #3b82f6 #1a1a1a;     /* Niebieski suwak na czarnym tle */
+  scroll-behavior: smooth;               /* Gładkie scrollowanie */
+}
+
+/* Poprawianie Chrome/Safari scrollbara */
+.rbc-agenda-view::-webkit-scrollbar {
+  width: 8px;  /* Szerokość scrollbara */
+}
+
+.rbc-agenda-view::-webkit-scrollbar-track {
+  background: #1a1a1a;  /* Tło */
+}
+
+.rbc-agenda-view::-webkit-scrollbar-thumb {
+  background: #3b82f6;  /* Suwak */
+  border-radius: 4px;   /* Zaokrąglenie */
+}
+
+.rbc-agenda-view::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa;  /* Jaśniejszy przy najechaniu */
+}
+
+/* Ukryj nagłówek tabelki ("Date", "Time", "Event") */
+.rbc-agenda-view thead {
+  display: none !important; /* Brak nagłówka */
+}
+
+/* Dopisek przy dacie (np. "— Dzisiaj") */
+.relative-date-tag {
+  font-size: 0.9rem !important;   /* Mniejszy tekst */
+  font-weight: 400 !important;    /* Normalny (nie grubki) */
+  color: #888 !important;         /* Szary - dedytny */
+  font-style: italic;             /* Pochyjony (kursywa) */
+  margin-left: 10px;              /* Odstęp od daty */
+}
