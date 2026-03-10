@@ -1,644 +1,583 @@
 /*
-════════════════════════════════════════════════════════════════
-  INDEX.CSS - WYGLĄD CAŁEJ APLIKACJI
-════════════════════════════════════════════════════════════════
-  Ten plik mówi przeglądce JAK ma wyglądać każdy element:
-  - Kolory tła i tekstu
-  - Rozmiary przycisków
-  - Animacje (efekty świecenia, animacje)
-  - Rozmieszczenie kalendarza
-  - Styl modala do dodawania zdarzeń
-════════════════════════════════════════════════════════════════
-*/
 
-/* GŁÓWNE USTAWIENIA - Styl ciemny całej aplikacji */
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; /* Który font? */
-  color-scheme: dark; /* Powiedzmy przeglądarce: "To tryb ciemny!" */
-  background-color: #1a1a1a; /* Bardzo ciemna szarość - prawie czarna */
-  color: #ffffff; /* Tekst będzie biały (widać na czarnym tle) */
-}
+================================================================
+INDEX.CSS - HARMONOGRAM STYLI
+================================================================
 
-/*
-  🎯 STRUKTURA STYLÓW:
-  
-  1) GLOBALNE - Styl wszystkiego (fonty, kolory)
-  2) PRZYCISKI - Jak wyglądają guziki
-  3) INPUTY - Pola do pisania (nazwa, godzina)
-  4) MODAL/OKNO - Okno "Dodaj Wydarzenie" pojawiające się na środku
-  5) KALENDARZ - Siatka kalendarza (dni, tygodnie)
-  6) ZDARZENIA - Jak wyglądają poszczególne zdarzenia na kalendarzu
-  7) AGENDA - Widok listy wszystkich zdarzeń
-  8) KOLORY - Wszystkie kolory zdarzeń i animacji
+1) GLOBALNE
+2) NAWIGACJA
+3) KALENDARZ
+4) ZDARZENIA
+5) MODAL
+6) AGENDA VIEW
+7) MOONLIGHT / TODAY
+8) DODATKI
+
+================================================================
 */
 
 
-/* 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  RESET - Ustawienia bazowe
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-*/
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1) GLOBALNE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-/* Ciało strony - główny kontener */
-body {
-  margin: 0;              /* Usuń domyślne marginesy */
-  display: block;         /* Блок layout (nie flex), żeby kalendarz "oddychał" */
-  min-height: 100vh;      /* Zajmij całą wysokość okna */
+.dark-mode {
+  --bg-dark: #05070a;
+  --card-bg: #0d1117;
+  --text-main: #ffffff;
+  --accent-blue: #f59e0b;
+  --border-color: #21262d;
+  --today-bg: rgba(59,130,246,0.1);
+  --moonlight: rgba(139,148,158,0.25);
 }
 
-/* Główny kontener React'a */
-#root {
-  width: 100%;            /* Zajmij całą szerokość */
-}
-/* --- Zgrupowane reguły klas (duplikaty usunięte; zachowano ostatnie wystąpienia) --- */
-
-/* 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  PRZYCISKI - Jak wyglądają guziki
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-*/
-
-/* Przycisk "Anuluj" - szary, transparentny */
-.btn-cancel {
-  background: none;       /* Brak tła */
-  color: #777;            /* Szary tekst */
-  border: none;           /* Brak ramki */
-  cursor: pointer;        /* Zmień kursor na "łapka" */
+.light-mode {
+  --bg-dark: #f0f2f5;
+  --card-bg: #ffffff;
+  --text-main: #1f2328;
+  --accent-blue: #3b82f6;
+  --border-color: #d0d7de;
+  --today-bg: #fff9c4;
+  --moonlight: rgba(0,0,0,0.05);
 }
 
-/* Przycisk "Zapisz Plan" - niebieski z błyskiem */
-.btn-save {
-  background: #3b82f6;    /* Ładny niebieski kolor */
-  color: white;           /* Biały tekst */
-  border: none;           /* Brak ramki */
-  padding: 10px 25px;     /* Wewnętrzne marginesy (robi przycisk większy) */
-  border-radius: 6px;     /* Zaokrąglone rogów */
-  font-weight: bold;      /* Grubszy tekst */
-  cursor: pointer;        /* Zmień kursor na "łapka" */
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); /* Cień pod przyciskiem */
+.dark-mode,
+.light-mode{
+  min-height:100vh;
+  width:100%;
+  background-color:var(--bg-dark);
+  transition:background-color .3s ease,color .3s ease;
 }
 
-/* Efekt przy najechaniu myszką na "Zapisz" */
-.btn-save:hover {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.7); /* Pokaż świecący cień */
+body{
+  margin:0;
+  background-color:var(--bg-dark);
+  color:var(--text-main);
+  font-family:'Segoe UI','Inter',sans-serif;
 }
 
-.current-month-label {
-  margin-left: 20px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #3b82f6;
-  text-transform: capitalize;
+.main-container{
+  padding:20px;
 }
 
-/* Przycisk "Powrót", "<", ">" - główne przyciski nawigacji */
-.glow-button {
-  background: #2a2a2a;     /* Ciemna szaarość */
-  color: white;            /* Biały tekst */
-  border: 1px solid #444;  /* Ciemna ramka */
-  padding: 10px 20px;      /* Marginesy wewnętrzne */
-  border-radius: 8px;      /* Zaokrąglone rogi */
-  cursor: pointer;         /* Łapka myszki */
-  font-weight: bold;       /* Grubszy tekst */
-  transition: all 0.3s ease; /* Ładna animacja zmian */
+.main-title{
+  color:var(--accent-blue);
+  text-transform:uppercase;
+  letter-spacing:2px;
+  margin-bottom:30px;
+  font-weight:800;
 }
 
-/* Efekt gdy najedziesz myszką - świeci się! */
-.glow-button:hover {
-  background: #3b82f6;              /* Zmień na niebieski */
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); /* Niebieski blask */
-  border-color: #60a5fa;            /* Jaśniejsza ramka */
-  transform: translateY(-2px);      /* Lekko się podniesie */
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2) NAWIGACJA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.nav-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:var(--card-bg);
+  padding:15px 25px;
+  border-radius:12px;
+  margin-bottom:20px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.3);
+  border:1px solid var(--border-color);
 }
 
-/* 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  POLA TEKSTOWE - Gdzie piszemy tekst
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-*/
-
-/* Pole do wpisania nazwy wydarzenia */
-.glow-input {
-  width: 100%;            /* Zajmij całą szerokość */
-  padding: 12px;          /* Miejsce wewnątrz pola */
-  margin: 20px 0;         /* Rzeczy powyżej i poniżej */
-  background: #111;       /* Bardzo czarny */
-  border: 2px solid #333; /* Ciemna ramka */
-  border-radius: 8px;     /* Zaokrąglone rogi */
-  color: white;           /* Biały tekst */
-  outline: none;          /* Brak domyślnego bordera */
-  transition: 0.3s;       /* Ładna animacja */
+.current-month-label{
+  font-size:1.3rem;
+  font-weight:bold;
+  color:var(--accent-blue);
+  min-width:300px;
+  text-align:center;
 }
 
-/* Efekt gdy napiszesz coś (pole jest "fokus") */
-.glow-input:focus {
-  border-color: #3b82f6;              /* Zmień ramkę na niebieską */
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); /* Niebieski blask */
+.glow-button{
+  background:var(--card-bg);
+  color:var(--text-main);
+  border:1px solid var(--border-color);
+  padding:8px 16px;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
 }
 
-/* Główny kontener - oś całej aplikacji */
-.main-container {
-  height: 95vh;                /* Zajmij 95% wysokości ekranu */
-  padding: 20px;               /* Marginesy z wszystkich stron */
-  background-color: #1a1a1a;   /* Bardzo czarny */
-  color: white;                /* Biały tekst */
+.glow-button:hover{
+  background:var(--accent-blue);
+  color:white !important;
+  box-shadow:0 0 10px var(--accent-blue);
 }
 
-/* Tytuł "Kalendarz" na górze */
-.main-title {
-  text-align: left;            /* Wyrównaj do lewej */
-  margin-bottom: 20px;         /* Przestrzeń poniżej */
-  font-weight: 800;            /* Bardzo grubszy i pogrubiony */
+.active-view{
+  background:var(--accent-blue) !important;
+  color:white !important;
 }
 
-/* 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  MODAL/OKNO - Okno "Dodaj Wydarzenie"
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-*/
 
-/* Zawartość wewnątrz modalnego okna */
-.modal-content {
-  background: #2a2a2a;       /* Ciemna szarość */
-  padding: 30px;             /* Przestrzeń wewnętrz */
-  border-radius: 15px;       /* Bardzo zaokrąglone rogi */
-  border: 1px solid #444;    /* Ciemna ramka */
-  text-align: center;        /* Wycentruj tekst */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3) KALENDARZ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.rbc-calendar{
+  background:var(--card-bg)!important;
+  border-radius:12px;
+  padding:15px;
+  border:1px solid var(--border-color)!important;
 }
 
-/* Czarne tło ZA modalem (przykrywające całą stronę) */
-.modal-overlay {
-  position: fixed;                           /* Przylip do okon i ekranu */
-  top: 0; left: 0; right: 0; bottom: 0;    /* Zajmij całą przestrzeń */
-  background: rgba(0, 0, 0, 0.85);          /* Bardzo ciemne tło za modalem */
-  display: flex;                             /* Użyj flexbox do wycentrowania */
-  justify-content: center;                   /* Wycentruj poziomo */
-  align-items: center;                       /* Wycentruj pionowo */
-  z-index: 9999;                             /* Polóż ON TOP (na wierzchu wszystkiego) */
+.rbc-toolbar{
+  display:none!important;
 }
 
-/* Pasek nawigacji - przyciska i informacje na górze */
-.nav-bar {
-  display: flex;             /* Elementy obok siebie (poziomo) */
-  gap: 12px;                 /* Odstęp między przyciskami */
-  align-items: center;       /* Wyrównaj w pionie */
-  margin-bottom: 20px;       /* Przestrzeń poniżej */
+.rbc-button-link{
+  color:var(--text-main)!important;
+  font-weight:700!important;
+  font-size:14px;
 }
 
-/* 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  KALENDARZ - Siatka, dni, wygląd
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-*/
-
-/* Efekt gdy najedziesz myszką na dzień */
-.rbc-day-bg:hover {
-  background-color: rgba(59, 130, 246, 0.1) !important; /* Subtelny niebieski */
-  box-shadow: inset 0 0 15px rgba(59, 130, 246, 0.4) !important; /* Blask ze środka */
-  cursor: cell;                                           /* Kursor jak siatka */
+.rbc-header{
+  padding:12px!important;
+  font-weight:bold;
+  color:#94a3b8;
+  border-bottom:2px solid var(--border-color)!important;
 }
 
-/* Widok tygodnia i dznia */
+.rbc-day-bg,
+.rbc-month-view,
 .rbc-time-view{
-  border: 1px solid #444 !important;  /* Ciemna ramka */
-  border-radius: 8px;                 /* Zaokrąglone rogi */
-  overflow: hidden;                   /* Ukryj to co wyłazi */
+  border-color:var(--border-color)!important;
 }
 
-/* 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ZDARZENIA - Jak wygląda zdarzenie
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-*/
-
-/* Każde zdarzenie (prostokąt z tytułem) */
-.rbc-event {
-  border-radius: 4px !important;                                          /* Zaokrąglone rogi */
-  padding: 2px 8px !important;                                            /* Marginesy wewnętrzne */
-  font-size: 12px !important;                                             /* Mały tekst */
-  transition: opacity 0.4s ease, transform 0.2s ease !important;          /* Ładne animacje */
-}
-  /* Przeszłe zdarzenia - wygaszone (szare) */
-  .rbc-agenda-event-cell span {
-    transition: color 0.4s ease; /* Ładna zmiana koloru */
-  }
-
-  /* Dni spoza zakresu miesiąca - ciemniejsze */
-  .rbc-day-bg.rbc-off-range-bg {
-    filter: brightness(0.8); /* Przyciemniej */
-  }
-
-  /* Efekt przy najechaniu myszką na zdarzenie - świeci się! */
-  .rbc-event:hover {
-    transform: scale(1.02);   /* Lekko się powiększ */
-    filter: brightness(1.2);  /* Pojaśnij trochę */
-  }
-
-/* Usuń białe kropki w widoku miesiąca (wyglądają ładniej bez nich) */
-.rbc-event-label {
-  display: none !important; /* Ukryj je */
+.rbc-off-range-bg{
+  background:rgba(0,0,0,0.03)!important;
+  opacity:.5;
 }
 
-/* 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  DZISIAJ - Wyróżnij dzisiejszego dnia
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-*/
-
-/* Tło dzisiejszego dnia - bardzo subtelny błękit */
-.rbc-today-custom {
-  background-color: rgba(59, 130, 246, 0.05) !important; /* Niewidoczny niebieski */
-  position: relative; /* Pozwól na efekty pseudo-elementów */
+.dark-mode .rbc-off-range-bg{
+  background:#020408!important;
+  opacity:.3;
 }
 
-/* Niebieski pasek na górze dzisiejszego dnia (wyróżnienie!) */
-.rbc-today-custom::before {
-  content: "";                                                /* "Rysuj coś" */
-  position: absolute;                                        /* Przymaluj do kontenera */
-  top: 0; left: 0; right: 0;                               /* Zajmij całą górę */
-  height: 4px;                                               /* Gruba kreska */
-  background: #3b82f6;                                       /* Niebieski kolor */
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);            /* Cień/blask */
-  z-index: 1;                                                /* Polóż na wierzchu */
+.dark-mode .rbc-time-gutter .rbc-label{
+  color:#ffffff!important;
+  font-weight:800!important;
+  font-size:14px!important;
 }
 
-/* Numer dnia dla "Dzisiaj" ma być niebieski */
-.rbc-today-custom .rbc-button-link {
-  color: #3b82f6 !important;  /* Zmień kolor na niebieski */
-  font-size: 1.1em !important; /* Lekko większy */
-  font-weight: 800 !important; /* Bardzo grubszy */
+.rbc-timeslot-group{
+  border-bottom:1px solid var(--border-color)!important;
+  min-height:40px!important;
 }
 
-/* Naprawa kontrastu dla reszty kalendarza */
-
-.rbc-day-bg {
-  border-left: 1px solid #333 !important;
+.rbc-time-header-content{
+  min-height:100px!important;
+  background:rgba(255,255,255,.02)!important;
 }
 
-.rbc-month-view, .rbc-month-row {
-  border-color: #333 !important;
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4) ZDARZENIA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.rbc-event-label{
+  display:none!important;
 }
 
-/* Dni spoza zakresu miesiąca - przyciemnienie */
-.rbc-off-range-bg {
-  background: #242424 !important; /* Odrobinę jaśniejsze od czerni */
+.event-time-label{
+  color:#f59e0b!important;
+  font-weight:800;
+  font-size:10px;
+  margin-right:5px;
 }
 
-/* Aktywny przycisk widoku (np. "Miesiąc" kiedy wybierzemy) */
-.rbc-toolbar button:active, .rbc-toolbar button.rbc-active {
-  background-color: #ffffff !important;           /* Zmień na białe tło */
-  color: white !important;                        /* Biały tekst */
-  box-shadow: inset 0 3px 5px rgba(0,0,0,0.2) !important; /* Cień wciśnęcia */
+.event-title-label{
+  font-size:13px;
+  color:#ffffff;
 }
 
-/* Napis "Luty 2026" na górze kalendarz */
-.rbc-toolbar-label {
-  font-size: 1.5em;               /* Duży tekst */
-  font-weight: bold;              /* Grubki */
-  color: #ffffff;                 /* Biały */
+.rbc-event{
+  border:none!important;
+  padding:2px 5px!important;
 }
 
-/* Rozmiar modalnego okna "Dodaj Wydarzenie" */
-.large-modal { 
-  width: 450px; /* Szerokie okno */
+.rbc-allday-cell .rbc-event{
+  border:1px solid rgba(255,255,255,.3)!important;
+  border-radius:4px!important;
+  margin-bottom:2px!important;
+  padding:3px 8px!important;
+  min-height:24px!important;
+  display:flex;
+  align-items:center;
 }
 
-/* Selektor "Jednorazowe" vs "Cykliczne" */
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5) MODAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-title {
+  font-size: 1.4rem;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
 .type-selector {
-  display: flex;              /* Przyciski obok siebie */
-  background: #111;           /* Czarne tło */
-  border-radius: 10px;        /* Zaokrąglone rogi */
-  margin-bottom: 20px;        /* Przestrzeń poniżej */
-  overflow: hidden;           /* Ukryj to co wyłazi */
-  border: 1px solid #444;     /* Ciemna ramka */
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
 }
 
-/* Każdy przycisk selektor */
-.type-selector button {
-  flex: 1;                    /* Zajmij równą część */
-  padding: 10px;              /* Marginesy */
-  border: none;               /* Brak ramki */
-  background: none;           /* Brak tła */
-  color: #888;                /* Szary tekst */
-  cursor: pointer;            /* Łapka */
-  font-weight: bold;          /* Grubki */
+.type-btn {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-/* Wybrany typ (np. "Cykliczne" które aktualnie wybrano) */
-.type-selector button.active-type {
-  background: #3b82f6;                              /* Niebieski */
-  color: white;                                     /* Biały tekst */
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);   /* Blask */
+.type-btn:hover {
+  box-shadow: 0 0 6px var(--accent-blue);
 }
 
-/* Siatka dni do wyboru (Pon, Wt, Śr itp) */
-.days-grid {
-  display: flex;               /* Dni obok siebie */
-  gap: 5px;                    /* Małe odstępy */
-  justify-content: center;     /* Wycentruj */
-  margin-top: 10px;            /* Przestrzeń powyżej */
+.type-btn.active-type {
+  background: var(--accent-blue);
+  color: #fff;
+  box-shadow: 0 0 6px var(--accent-blue);
 }
 
-/* Przycisk każdego dnia */
-.day-btn {
-  padding: 8px;               /* Marginesy wewnętrzne */
-  background: #222;           /* Ciemny */
-  border: 1px solid #444;     /* Ramka */
-  color: white;               /* Tekst */
-  border-radius: 5px;         /* Zaokrąglone */
-  cursor: pointer;            /* Łapka */
-  font-size: 12px;            /* Mały tekst */
-}
-
-/* Wybrany dzień - świeci się niebiesko! */
-.day-btn.active {
-  background: #3b82f6;                             /* Niebieski */
-  border-color: #60a5fa;                           /* Jaśniejszy niebieski */
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);   /* Blask */
-}
-/* --- NAPRAWA ROZJECHANEGO KALENDARZA --- */
-
-/* Wymuszenie pełnej szerokości dla kontenera */
-/* 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  UKŁAD KALENDARZA - Siatka dni
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-*/
-
-/* Cały kalendarz - zajmij całą szerokość */
-.rbc-calendar {
-  width: 100% !important;          /* Całą szerokość */
-  display: flex !important;        /* Flexbox */
-  flex-direction: column !important; /* Rzeczy pod sobą */
-}
-
-/* Główny widok kalendarza (siatka miesiąca) */
-.rbc-month-view {
-  display: flex !important;          /* Flexbox */
-  flex-direction: column !important; /* Wiersze pod sobą */
-  flex: 1 0 0 !important;            /* Zajmij dostępne miejsce */
-  width: 100% !important;            /* Całą szerokość */
-  min-height: 600px !important;      /* Przynajmniej taka wysokość */
-  user-select: none;                 /* Nie pozwól na zaznaczenie tekstu */
-}
-
-/* Każdy tydzień - traktuj jako rząd */
-.rbc-month-row {
-  display: flex !important;          /* Flexbox */
-  flex-direction: column !important; /* Rzeczy pod sobą */
-  flex: 1 0 0 !important;            /* Zajmij równą część */
-  overflow: hidden;                  /* Ukryj to co wyłazi */
-}
-
-
-/* Właściwy rząd z datami - dni obok siebie */
-.rbc-month-row .rbc-row-content .rbc-row {
-  display: flex !important;       /* Flexbox */
-  flex-direction: row !important; /* W linii poziomej */
-  width: 100% !important;         /* Całą szerokość */
-}
-
-/* Każda komórka z dniem (cyferka) */
-.rbc-date-cell {
-  flex: 1 1 0% !important;    /* Równa część (1/7 dla 7 dni) */
-  text-align: right !important; /* Wyrównaj cyfrę do prawej */
-  padding: 8px !important;     /* Marginesy */
-  font-size: 14px !important;  /* Rozmiar czcionki */
-  font-weight: bold !important; /* Grubkie */
-  min-width: 0 !important;     /* Nie robij za dużo */
-  pointer-events: none;        /* Nie reaguj na kliknięcia (cyferki są dekoracyjne) */
-}
-
-/* Zawartość rzędu - gdzie są zdarzenia */
-.rbc-row-content {
-  z-index: 2;                  /* Polóż powyżej tła */
-  pointer-events: auto;        /* Pozwól klikać na zdarzenia */
-}
-
-/* Guziki z cyframi dni - pozwól klikać */
-.rbc-date-cell button {
-  pointer-events: auto;        /* Pozwól klikać */
-}
-
-/* Tło każdego dnia (komórka) */
-.rbc-day-bg {
-  flex: 1 1 0% !important;        /* Równa część */
-  border-left: 1px solid #444 !important; /* Linie między dniami */
-}
-
-/* Nagłówek kalendarza (Poniedziałek, Wtorek itp) */
-.rbc-month-header {
-  display: flex !important;       /* Flexbox */
-  flex-direction: row !important; /* Kurs w linii poziomej */
-}
-
-/* Każde pole nagłówka ("Pon", "Wt" itp) */
-.rbc-header {
-  flex: 1 0 0 !important;            /* Równa część */
-  padding: 10px 0 !important;        /* Marginesy */
-  border-bottom: 1px solid #444 !important; /* Linia poniżej */
-}
-/* "Znaczek" z wybraną datą w oknie dodawania (np. "19 lutego 2026") */
-.selected-date-badge {
-  background: rgba(59, 130, 246, 0.1); /* Podtła z odrobiną niebieski */
-  color: #3b82f6;                      /* Niebieski tekst */
-  padding: 8px 15px;                   /* Marginesy */
-  border-radius: 20px;                 /* Bardzo zaokrąglone (będzie jak piguła) */
-  display: inline-block;               /* Ścieśnięty do tekstu */
-  margin-bottom: 20px;                 /* Przestrzeń poniżej */
-  font-weight: bold;                   /* Grubkit */
-  border: 1px solid rgba(59, 130, 246, 0.3); /* Subtelna ramka */
-}
-
-/* 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  WYBÓR GODZIN - Start i Koniec
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-*/
-
-/* Kontener obu pól czasu */
 .time-picker-container {
-  display: flex;           /* Pola obok siebie */
-  justify-content: center; /* Wycentruj */
-  gap: 30px;              /* Przestrzeń między nimi */
-  margin: 15px 0;         /* Marginesy */
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
 }
 
-/* Jedno pole czasu (Start lub Koniec) */
 .time-field {
-  display: flex;          /* Flexbox */
-  flex-direction: column; /* Elementy pod sobą */
-  align-items: center;    /* Wycentruj */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Etykieta "Start (opcjonalnie)" */
-.time-field label {
-  font-size: 12px;           /* Mały tekst */
-  color: #888;               /* Szary */
-  margin-bottom: 5px;        /* Przestrzeń poniżej */
-  text-transform: uppercase; /* WIELKIE LITERY */
+.glow-input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  transition: all 0.2s;
 }
 
-/* Pole do wyboru godziny (pokazuje 14:30) */
-.time-field input[type="time"] {
-  background: #111;          /* Czarne tło */
-  border: 1px solid #444;    /* Ramka */
-  color: white;              /* Biały tekst */
-  padding: 8px;              /* Marginesy wewnętrzne */
-  border-radius: 5px;        /* Zaokrąglone rogi */
-  font-size: 18px;           /* Duży tekst */
-  outline: none;             /* Brak domyślnego zaznaczenia */
-  transition: 0.3s;          /* Animacja */
+.glow-input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 8px var(--accent-blue);
 }
 
-/* Efekt kiedy klikniesz na pole - świeci się! */
-.time-field input[type="time"]:focus {
-  border-color: #3b82f6;              /* Niebieski border */
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); /* Blask */
+.input-with-label label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-main);
 }
 
-/* Ikona zegara w polu czasu - zrób ją białą */
-input[type="time"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);  /* Odwróć kolory (czarne-> białe) */
-  cursor: pointer;    /* Łapka myszki */
+.days-grid, .colors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
 }
 
-/* Przycisk "Cały tydzień (Deadline/Spotkania)" */
-.select-all-btn {
-  margin-top: 15px;                             /* Odstęp powyżej */
-  background: transparent;                      /* Przezroczysty */
-  color: #3b82f6;                               /* Niebieski tekst */
-  border: 1px dashed #3b82f6;                   /* Przerywana ramka */
-  padding: 5px 15px;                            /* Marginesy */
-  border-radius: 5px;                           /* Zaokrąglone rogi */
-  font-size: 12px;                              /* Mały tekst */
-  cursor: pointer;                              /* Łapka */
-  transition: 0.3s;                             /* Animacja */
+.day-btn {
+  flex: 1;
+  min-width: 36px;
+  padding: 6px 0;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-/* Efekt najechania myszką */
-.select-all-btn:hover {
-  background: rgba(59, 130, 246, 0.1);         /* Subtelny niebieski */
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); /* Delikatny blask */
+.day-btn.active {
+  background: var(--accent-blue);
+  color: #fff;
+  box-shadow: 0 0 4px var(--accent-blue);
 }
 
-/* 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  WIDOK AGENDA - Lista wszystkich zdarzeń
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 
-*/
-
-/* Całą tabelę na bloki zamiast tabelki */
-.rbc-agenda-view table.rbc-agenda-table {
-  display: block !important;  /* Zmień na blokowy layout */
-  border: none !important;    /* Usunięto ramkę */
+.colors-grid div {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #ccc;
+  transition: all 0.2s;
 }
 
-/* Ciało tabeli i wiersze - wszystko jako bloki */
-.rbc-agenda-view table.rbc-agenda-table tbody,
-.rbc-agenda-view table.rbc-agenda-table tr {
-  display: block !important;  /* Każdy wiersz na blok */
-  width: 100% !important;     /* Całą szerokość */
+.colors-grid div.selected {
+  border: 3px solid #fff;
+  box-shadow: 0 0 6px #fff;
 }
 
-/* Nagłówek daty w agendzie ("19 lipca (wtorek)") */
-.rbc-agenda-date-cell {
-  display: block !important;          /* Blok */
-  width: 100% !important;             /* Całą szerokość */
-  background-color: #1a1a1a !important; /* Czarne tło */
-  padding: 15px 20px !important;      /* Marginesy */
-  margin-top: 0px !important;         /* Brak odstępu */
-  border-bottom: 2px solid #3b82f6 !important; /* Niebieski pasek poniżej */
-  position: sticky;                   /* Przylij do góry kiedy scrollujemy */
-  top: 0;                             /* Zastaw sobie na wierzchu */
-  z-index: 10;                        /* Nad wszystkim */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
-/* "Dzisiaj" - wyświetli się kolorem złota */
-.relative-date-today {
-  color: #ffcc00 !important;    /* Żółty/złoty kolor */
-  font-weight: bold !important; /* Grubki */
+.btn-save, .btn-cancel {
+  flex: 1;
+  margin: 0 4px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-/* Mały odstęp między datami */
-.rbc-agenda-table tr:first-child .rbc-agenda-date-cell {
-  margin-top: 0;  /* Brak odstępu dla pierwszej */
+.btn-save {
+  background: var(--accent-blue);
+  color: #fff;
 }
 
-/* Tekst "19 lipca (wtorek)" */
-.custom-agenda-date-label {
-  font-size: 1.2rem !important;      /* Duży tekst */
-  font-weight: 800 !important;       /* Bardzo grubki */
-  color: #3b82f6 !important;         /* Niebieski */
-  text-transform: capitalize;        /* Pierwsza litera duża */
+.btn-save:hover {
+  background: #2563eb;
 }
 
-/* Czas i nazwa zdarzenia - oba razem w linii */
-.rbc-agenda-time-cell, 
-.rbc-agenda-event-cell {
-  display: inline-block !important;   /* Obok siebie */
-  vertical-align: middle !important;  /* Wyrównaj w pionie */
-  background: transparent !important; /* Przezroczysty */
-  border: none !important;            /* Brak ramki */
-  padding: 10px 20px !important;      /* Marginesy */
+.btn-cancel {
+  background: #555;
+  color: #fff;
 }
 
-/* Kolumna czasu (np. "14:30 - 15:00") */
-.rbc-agenda-time-cell {
-  width: auto !important;       /* Tyle ile potrzeba */
-  min-width: 150px !important;  /* Ale nie mniej */
+.btn-cancel:hover {
+  background: #333;
 }
 
-/* Tekst czasu - złoty kolor */
-.custom-agenda-time-label {
-  color: #ffcc00 !important;         /* Żółty/złoty */
-  font-weight: bold;                 /* Grubki */
-  font-family: monospace;            /* Tekst maszynopisu (np. "14:30") */
+.info-date-display {
+  width: 100%;
+  text-align: center;
+  color: var(--accent-blue);
+  font-weight: 600;
 }
 
-/* Kolumna zdarzenia - zajmuje resto miejsca */
-.rbc-agenda-event-cell {
-  width: calc(100% - 170px) !important; /* Całą szerokość minus czas */
+/* Dodatkowa spójność dla modal w dark/light mode */
+.light-mode .day-btn, .light-mode .colors-grid div {
+  border-color: #ccc;
+  background: #f0f2f5;
+  color: #1f2328;
 }
 
-/* Cały widok agendy - scroll */
-.rbc-agenda-view {
-  max-height: 75vh !important;           /* Zajmiij 75% ekranu */
-  overflow-y: auto !important;           /* Włącz pionowy scroll */
-  overflow-x: hidden !important;         /* Nie scrolluj w bok */
-  scrollbar-width: thin;                 /* Cienki pasek scrollu */
-  scrollbar-color: #3b82f6 #1a1a1a;     /* Niebieski suwak na czarnym tle */
-  scroll-behavior: smooth;               /* Gładkie scrollowanie */
+.light-mode .day-btn.active, .light-mode .colors-grid div.selected {
+  box-shadow: 0 0 4px var(--accent-blue);
 }
 
-/* Poprawianie Chrome/Safari scrollbara */
-.rbc-agenda-view::-webkit-scrollbar {
-  width: 8px;  /* Szerokość scrollbara */
+.btn-delete {
+  background-color: #ef4444;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 8px;
 }
 
-.rbc-agenda-view::-webkit-scrollbar-track {
-  background: #1a1a1a;  /* Tło */
+.btn-delete:hover {
+  opacity: 0.8;
+}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6) AGENDA VIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* DARK MODE AGENDA */
+.dark-mode .agenda-wrapper {
+  background: #2c2c2c; /* ciemnoszare tło całego widoku */
+  padding: 16px;
+  min-height: 100vh;
 }
 
-.rbc-agenda-view::-webkit-scrollbar-thumb {
-  background: #3b82f6;  /* Suwak */
-  border-radius: 4px;   /* Zaokrąglenie */
+.dark-mode .agenda-day-card {
+  background: #3a3a3a; /* ciemniejsza karta dnia */
+  color: #f1f1f1;      /* jasny tekst */
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* lekki cień */
 }
 
-.rbc-agenda-view::-webkit-scrollbar-thumb:hover {
-  background: #60a5fa;  /* Jaśniejszy przy najechaniu */
+.dark-mode .agenda-day-header {
+  color: #f0f0f0;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 18px;
 }
 
-/* Ukryj nagłówek tabelki ("Date", "Time", "Event") */
-.rbc-agenda-view thead {
-  display: none !important; /* Brak nagłówka */
+.dark-mode .agenda-event {
+  background: #F5F5F5; /* ciemne „dymki” dla wydarzeń */
+  color: #f1f1f1;
+  border-left: 4px solid;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-/* Dopisek przy dacie (np. "— Dzisiaj") */
-.relative-date-tag {
-  font-size: 0.9rem !important;   /* Mniejszy tekst */
-  font-weight: 400 !important;    /* Normalny (nie grubki) */
-  color: #888 !important;         /* Szary - dedytny */
-  font-style: italic;             /* Pochyjony (kursywa) */
-  margin-left: 10px;              /* Odstęp od daty */
+.dark-mode .agenda-event.all-day {
+  background: #505050; /* trochę ciemniejsze dla całodniowych */
+  font-style: italic;
+}
+
+.dark-mode .event-time {
+  color: #f59e0b; /* godziny w kontrastowym kolorze */
+}
+
+/* LIGHT MODE AGENDA */
+.light-mode .agenda-wrapper {
+  background: #f5f5f5; /* delikatne jasne tło całego widoku */
+  padding: 16px;
+  min-height: 100vh;
+}
+
+.light-mode .agenda-day-card {
+  background: #C0C0C0; /* lekko wyróżniona karta dnia */
+  color: #000000;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* subtelny cień */
+}
+
+.light-mode .agenda-day-header {
+  color: #111111;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.light-mode .agenda-event {
+  background: #F5F5F5; /* lekki „dymek” wydarzenia */
+  color: #000000;
+  border-left: 4px solid;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.light-mode .agenda-event.all-day {
+  background: #f0f0f0; /* trochę inny odcień dla całodniowych */
+  font-style: italic;
+}
+
+.light-mode .event-time {
+  color: #3b82f6; /* godziny w kontrastowym, niebieskim kolorze */
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7) MOONLIGHT / TODAY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.rbc-day-slot .rbc-time-slot:hover,
+.rbc-month-view .rbc-day-bg:hover{
+  background-color:var(--moonlight)!important;
+  cursor:crosshair;
+}
+
+.rbc-today{
+  background-color:var(--today-bg)!important;
+}
+
+.dark-mode .rbc-today{
+  border-left:3px solid var(--accent-blue)!important;
+}
+
+.dark-mode .rbc-today .rbc-button-link{
+  color:#58a6ff!important;
+  text-shadow:0 0 10px rgba(88,166,255,.5);
+}
+
+.rbc-selected-cell{
+  background-color:rgba(148,163,184,.25)!important;
+}
+
+.rbc-current-time-indicator{
+  background-color:#f59e0b!important;
+  height:2px;
+  box-shadow:0 0 8px #f59e0b;
+}
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8) DODATKI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.days-grid{
+  display:flex;
+  gap:4px;
+  margin:10px 0;
+}
+
+.day-btn{
+  background:#21262d;
+  border:1px solid #30363d;
+  color:#8b949e;
+  padding:6px;
+  border-radius:4px;
+  flex:1;
+  font-size:.7rem;
+}
+
+.light-mode .day-btn{
+  background:#f0f2f5;
+  color:#1f2328;
+}
+
+.day-btn.active{
+  background:var(--accent-blue)!important;
+  color:white!important;
 }
