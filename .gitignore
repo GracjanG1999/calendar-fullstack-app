@@ -1,37 +1,78 @@
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Python / Django
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 venv/
 env/
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
 *.egg-info/
+*.egg
+
+# Zmienne środowiskowe — nigdy nie commitować sekretów
 .env
 .env.local
+.env.*.local
+settings_local.py
 
-# DATABASE (Absolutnie kluczowe dla prywatności Pana danych)
+# Baza danych SQLite — dane lokalne, nie wersjonowane
 db.sqlite3
 db.sqlite3-journal
+db.sqlite3-wal
+db.sqlite3-shm
 
-# React / Node
+# Testy / coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# React / Node / Vite
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+frontend/.env.*.local
 dist/
 build/
 .eslintcache
-npm-debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Claude Code (narzędzie AI do developmentu)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+.claude/
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # IDE / Edytory
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 .vscode/
 .idea/
 *.swp
 *.swo
+*.suo
 .project
 .pydevproject
 .settings/
 
-# OS / Systemowe
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# System operacyjny
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 .DS_Store
 Thumbs.db
 desktop.ini
+ehthumbs.db
 
-# Logs
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Logi
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 *.log
+logs/

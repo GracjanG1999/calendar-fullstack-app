@@ -1,0 +1,169 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AGENDA — redesign z responsywnością
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.agenda-wrapper {
+  padding: 8px 12px;
+}
+
+/* ── Przycisk ładowania starszych ── */
+
+.agenda-more-past {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 14px;
+  background: transparent;
+  border: 1px dashed var(--border-color);
+  border-radius: 10px;
+  color: var(--text-main);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  box-sizing: border-box;
+}
+.agenda-more-past:hover { opacity: 1; }
+
+/* ── Karta dnia ── */
+
+.agenda-day-card {
+  border-radius: 14px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  transition: box-shadow 0.2s;
+}
+
+/* ── Nagłówek dnia ── */
+
+.agenda-day-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Duża cyfra dnia */
+.agenda-date-num {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--accent-blue);
+  line-height: 1;
+  min-width: 50px;
+  text-align: center;
+}
+
+.agenda-date-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Nazwa dnia tygodnia */
+.agenda-date-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: capitalize;
+  color: var(--text-main);
+}
+
+/* Miesiąc i rok — mniejsze, stonowane */
+.agenda-date-month {
+  font-size: 0.76rem;
+  opacity: 0.55;
+  color: var(--text-main);
+  text-transform: capitalize;
+}
+
+/* ── Rząd wydarzenia ── */
+
+.agenda-event {
+  display: flex;
+  align-items: center;
+  padding: 10px 18px;
+  gap: 14px;
+  border-left: 4px solid transparent;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.15s;
+}
+.agenda-event:last-child { border-bottom: none; }
+.agenda-event:hover      { background: var(--moonlight); }
+
+/* Odznaka godziny */
+.event-time {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  background: var(--bg-dark);
+  border-radius: 6px;
+  padding: 3px 9px;
+  white-space: nowrap;
+  min-width: 96px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+/* Tytuł wydarzenia */
+.event-title {
+  font-weight: 600;
+  font-size: 0.92rem;
+  flex: 1;
+  color: var(--text-main);
+}
+
+/* Całodniowe — kursywa, badge "Cały dzień" */
+.agenda-event.all-day { font-style: italic; }
+.all-day-label {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+/* Brak wydarzeń */
+.no-events {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-main);
+  opacity: 0.45;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   KOLORY — tryb nocny / dzienny
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.dark-mode .agenda-day-card {
+  background: #0d1117;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55);
+}
+.dark-mode .agenda-event { color: #e8eaed; }
+
+.light-mode .agenda-day-card {
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+}
+.light-mode .agenda-event { color: #1f2328; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+@media (max-width: 640px) {
+  .agenda-wrapper { padding: 6px 8px; }
+
+  .agenda-day-header { padding: 10px 12px; gap: 10px; }
+  .agenda-date-num   { font-size: 1.7rem; min-width: 38px; }
+  .agenda-date-name  { font-size: 0.85rem; }
+  .agenda-date-month { font-size: 0.7rem; }
+
+  .agenda-event  { padding: 9px 12px; gap: 8px; flex-wrap: wrap; }
+  .event-time    { min-width: auto; font-size: 0.72rem; padding: 2px 7px; }
+  .event-title   { font-size: 0.85rem; min-width: 100%; }
+}

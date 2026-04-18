@@ -1,0 +1,240 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   KALENDARZ — react-big-calendar
+   Nadpisania domyślnych styli biblioteki.
+   Kolory bazują na zmiennych z index.css.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Kontener całego kalendarza */
+.rbc-calendar {
+  background: var(--card-bg) !important;
+  border-radius: 12px;
+  padding: 15px;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Ukrywamy wbudowany pasek narzędzi — używamy własnego nav-bar */
+.rbc-toolbar { display: none !important; }
+
+/* ── Cyfry dni (domyślne — nadpisywane przez tryb nocny/dzienny poniżej) ── */
+.rbc-button-link {
+  font-weight: 700 !important;
+  font-size: 14px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TRYB NOCNY — białe cyfry z poświatą księżycową
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Cyfry bieżącego miesiąca — czysta biel
+   Celujemy w obie klasy: rbc-button-link (widok tyg/dnia)
+   i month-date-header-click (nasz własny komponent w widoku miesiąca) */
+.dark-mode .rbc-button-link,
+.dark-mode .month-date-header-click {
+  color: #ffffff !important;
+  text-shadow: none;
+}
+
+/* Komórki poza bieżącym miesiącem — przyciemnione */
+.dark-mode .rbc-off-range-bg {
+  background: #020408 !important;
+  opacity: 0.3;
+}
+
+/* Cyfry poprzedniego/następnego miesiąca — szare */
+.dark-mode .rbc-off-range .rbc-button-link,
+.dark-mode .rbc-off-range .month-date-header-click {
+  color: #4a5568 !important;
+  text-shadow: none;
+}
+
+/* Godziny na osi czasu (widok tygodnia/dnia) */
+.dark-mode .rbc-time-gutter .rbc-label {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 14px !important;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TRYB DZIENNY — lekki żółty jak papierowy kalendarz
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Komórki dnia — kremowo-żółte tło jak kartka papieru */
+.light-mode .rbc-day-bg {
+  background-color: #fffef0 !important;
+}
+
+/* Cyfry dni — ciepły ciemny brąz czytelny na żółtym tle */
+.light-mode .rbc-button-link {
+  color: #4a3b00 !important;
+}
+
+/* Komórki poza bieżącym miesiącem — lekko szare */
+.light-mode .rbc-off-range-bg {
+  background: #f2f0e0 !important;
+  opacity: 0.8;
+}
+
+/* Cyfry "poza zakresem" w trybie dziennym — stonowane */
+.light-mode .rbc-off-range .rbc-button-link {
+  color: #b0a070 !important;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NAGŁÓWKI DNI TYGODNIA (Pon, Wt, Śr…)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.rbc-header {
+  padding: 12px !important;
+  font-weight: bold;
+  border-bottom: 2px solid var(--border-color) !important;
+}
+
+/* Tryb nocny: nazwy dni — czysta biel */
+.dark-mode .rbc-header {
+  color: #ffffff !important;
+}
+
+/* Tryb dzienny: nazwy dni — ciemny grafit */
+.light-mode .rbc-header {
+  color: #374151 !important;
+}
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid var(--border-color) !important;
+  min-height: 40px !important;
+}
+
+.rbc-time-header-content {
+  min-height: 100px !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* ── Zdarzenia ── */
+
+.rbc-event-label { display: none !important; }
+
+.rbc-event {
+  border: none !important;
+  padding: 2px 5px !important;
+}
+
+.rbc-allday-cell .rbc-event {
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 4px !important;
+  margin-bottom: 2px !important;
+  padding: 3px 8px !important;
+  min-height: 24px !important;
+  display: flex;
+  align-items: center;
+}
+
+.event-tile-content {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.event-time-label {
+  color: #f59e0b;
+  font-weight: 800;
+  font-size: 10px;
+}
+
+.event-title-label {
+  font-size: 13px;
+  color: #ffffff;
+}
+
+/* ── Hover / today / moonlight ── */
+
+.rbc-day-slot .rbc-time-slot:hover,
+.rbc-month-view .rbc-day-bg:hover {
+  background-color: var(--moonlight) !important;
+  cursor: crosshair;
+}
+
+.month-cell-click-area { height: 100%; width: 100%; }
+
+.rbc-month-view .month-cell-click-area:hover {
+  background-color: var(--moonlight) !important;
+  cursor: crosshair;
+}
+
+.month-date-header-click { cursor: pointer; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   KOMÓRKA "DZISIAJ" — tło pola
+   .rbc-today jest na divie tła (rbc-day-bg),
+   więc background-color tutaj działa poprawnie.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.rbc-today { background-color: var(--today-bg) !important; }
+
+.dark-mode .rbc-today {
+  border-left: 3px solid rgba(140, 185, 255, 0.9) !important;
+  box-shadow: inset 0 0 0 2px rgba(120, 170, 255, 0.5) !important;
+}
+
+.light-mode .rbc-today {
+  border-left: 3px solid #f59e0b !important;
+  box-shadow: inset 0 0 0 2px #f59e0b !important;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CYFRA "DZISIAJ" — okrągła odznaka
+   .date-today jest klasą dodawaną przez
+   MonthDateHeader gdy date === today.
+   Działa poprawnie bo jest bezpośrednio
+   na elemencie <span> z cyfrą.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.date-today {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  font-weight: 800 !important;
+}
+
+/* Tryb nocny: niebieskie koło z moonlight glow */
+.dark-mode .date-today {
+  background: rgba(100, 155, 255, 0.5) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 8px rgba(100, 160, 255, 0.9),
+              0 0 18px rgba(80, 130, 255, 0.55),
+              0 0 32px rgba(60, 110, 255, 0.3) !important;
+}
+
+/* Tryb dzienny: złote koło */
+.light-mode .date-today {
+  background: #f59e0b !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.7) !important;
+}
+
+.rbc-selected-cell { background-color: rgba(148, 163, 184, 0.25) !important; }
+
+.rbc-current-time-indicator {
+  background-color: #f59e0b !important;
+  height: 2px;
+  box-shadow: 0 0 8px #f59e0b;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+@media (max-width: 900px) {
+  .rbc-calendar  { padding: 8px; }
+  .rbc-header    { padding: 8px 4px !important; font-size: 0.8rem; }
+}
+
+@media (max-width: 600px) {
+  .rbc-calendar  { padding: 4px; border-radius: 8px; }
+  .rbc-header    { padding: 6px 2px !important; font-size: 0.7rem; }
+  .rbc-button-link,
+  .month-date-header-click { font-size: 11px !important; }
+  .date-today    { width: 22px !important; height: 22px !important; }
+}

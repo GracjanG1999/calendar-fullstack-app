@@ -1,0 +1,213 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MODAL
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-title {
+  font-size: 1.4rem;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
+/* ── Tryb ── */
+
+.type-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.type-btn {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.type-btn:hover { box-shadow: 0 0 6px var(--accent-blue); }
+
+.type-btn.active-type {
+  background: var(--accent-blue);
+  color: #fff;
+  box-shadow: 0 0 6px var(--accent-blue);
+}
+
+/* ── Pola daty / czasu ── */
+
+.time-picker-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.period-dates {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.time-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-date-display {
+  width: 100%;
+  text-align: center;
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+/* ── Input ── */
+
+.input-with-label label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.glow-input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.glow-input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 8px var(--accent-blue);
+}
+
+/* ── Dni tygodnia ── */
+
+.days-grid {
+  display: flex;
+  gap: 4px;
+  margin: 10px 0;
+}
+
+.day-btn {
+  flex: 1;
+  min-width: 36px;
+  padding: 6px 0;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.day-btn.active {
+  background: var(--accent-blue);
+  color: #fff;
+  box-shadow: 0 0 4px var(--accent-blue);
+}
+
+/* ── Kolory ── */
+
+.colors-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.color-swatch.selected {
+  border: 3px solid #fff;
+  box-shadow: 0 0 6px #fff;
+}
+
+/* ── Przyciski ── */
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-save,
+.btn-cancel,
+.btn-delete {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-save {
+  background: var(--accent-blue);
+  color: #fff;
+}
+
+.btn-save:hover { filter: brightness(1.15); }
+
+.btn-cancel {
+  background: #555;
+  color: #fff;
+}
+
+.btn-cancel:hover { background: #333; }
+
+.btn-delete {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btn-delete:hover { opacity: 0.85; }

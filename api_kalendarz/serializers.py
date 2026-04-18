@@ -1,12 +1,15 @@
 from rest_framework import serializers
 from .models import Event
 
-"""
-Selializer dla modelu Event, który będzie używany do konwersji danych między formatem JSON a modelem Django.
-Używamy ModelSerializer, który automatycznie generuje pola na podstawie modelu Event. 
-W tym przypadku, ustawiamy fields na '__all__', co oznacza, że wszystkie pola modelu będą uwzględnione w serializacji.
-"""
+
 class EventSerializer(serializers.ModelSerializer):
+    """
+    Serializator modelu Event — konwertuje obiekt Django ↔ JSON.
+
+    fields = '__all__' — uwzględnia wszystkie pola modelu:
+    id, title, start, end, all_day, is_recurring,
+    recurring_days, r_start_time, r_end_time, color.
+    """
     class Meta:
         model = Event
-        fields = '__all__' 
+        fields = '__all__'
